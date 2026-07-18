@@ -1,0 +1,6 @@
+services:
+  payment-orcherstration:
+    build: .
+    image: payment-orchestration
+    ports: 
+      - "8000:8000"
