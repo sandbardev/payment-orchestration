@@ -5,6 +5,10 @@ on:
     workflows: ["payment-orchestration-ci"]
     types:
       - completed
+  push:
+    branches: master
+  pull_request:
+    branches: master
 
 env:
   AWS_REGION: sa-east-1
