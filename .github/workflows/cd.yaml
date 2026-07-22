@@ -1,10 +1,11 @@
-name: Deploy to Amazon EKS
+name: payment-orchestration-cd
 
 on:
-  push:
-    branches: master
-  pull_request:
-    branches: master
+  workflow_run:
+    workflows: ["payment-orchestration-ci"]
+    types:
+      - completed
+    # branches: [ "master" ]   # Only runs when CI completes on master
 
 env:
   AWS_REGION: sa-east-1
