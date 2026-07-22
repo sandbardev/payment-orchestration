@@ -1,13 +1,19 @@
-name: Deploy to Amazon EKS
+name: payment-orchestration-cd
 
 on:
+  workflow_run:
+    workflows: ["payment-orchestration-ci"]
+    types:
+      - completed
   push:
-    branches: [ "master" ]
+    branches: master
+  pull_request:
+    branches: master
 
 env:
   AWS_REGION: sa-east-1
   ECR_REPOSITORY: payment-orchestration
-  EKS_CLUSTER: main_eks_cluster
+  EKS_CLUSTER: main-eks-cluster
 
 permissions:
   contents: read
@@ -15,14 +21,14 @@ permissions:
 jobs:
   deploy:
     name: Deploy
-    depends: ci
     runs-on: ubuntu-latest
     environment: dev
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
 
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.workflow_run.head_sha }}
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
